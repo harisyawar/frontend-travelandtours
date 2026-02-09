@@ -22,8 +22,9 @@ export default function Navbar() {
 
   // Logout handler
   const handleLogout = () => {
-    setUser(null); // remove from Jotai + localStorage
-    router.push("/Login");
+    setUser(null); // clear user state (Jotai)
+    localStorage.clear(); // remove everything from localStorage
+    router.push("/Login"); // redirect to login page
   };
 
   return (
@@ -61,10 +62,10 @@ export default function Navbar() {
             </li>
             <li>
               <Link
-                href="/my-tour-booking"
+                href="/my-bookings"
                 className={isTransparent ? "text-white" : "text-black"}
               >
-                My Booking Tours
+                Bookings
               </Link>
             </li>
             <li>
@@ -84,7 +85,7 @@ export default function Navbar() {
                 onClick={handleLogout}
                 className={`px-4 py-2 rounded ${
                   isTransparent
-                    ? "bg-white text-black"
+                    ? "bg-[#ffda32] text-black"
                     : "bg-[#ffda32] text-black"
                 }`}
               >

@@ -38,11 +38,11 @@ export default function MyBookings() {
   }, [userId]);
   return (
     <div className="max-w-7xl mx-auto py-4 px-4 md:">
-      <h1 className="text-2xl font-bold mb-4">My Tours</h1>
+      <h1 className="text-2xl font-bold mb-4 font-serif ">My Booked Tours</h1>
 
       {/* ================= MOBILE CARDS ================= */}
       <div className="space-y-4 md:hidden">
-        {bookings.map((b) => (
+        {bookings.slice(0, visibleCount).map((b) => (
           <div key={b._id} className="bg-white rounded-xl shadow p-4 space-y-2">
             <div className="flex justify-between items-center">
               <p className="font-semibold text-sm">Order #{b._id.slice(-6)}</p>
@@ -65,12 +65,25 @@ export default function MyBookings() {
               {b.guests.children} Children
             </p>
 
-            <p className="text-sm font-semibold">Price: ${b.price}</p>
+            <div className="flex justify-between">
+              <span className="text-sm font-semibold ">Price:</span>
+              <span className="text-[#10e9dd]">${b.price}</span>
+            </div>
           </div>
         ))}
+        {visibleCount < bookings.length && (
+          <div className="flex justify-center py-4">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 5)}
+              className="px-6 py-2 rounded-full bg-[#ffda32] text-white font-medium hover:opacity-90 transition"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </div>
       <div className="space-y-4 md:hidden">
-        <h2 className="my-6">My transfer</h2>
+        <h1 className="text-2xl font-bold my-4 font-serif">My Transfer</h1>
         {transferBooking.map((b) => (
           <div key={b._id} className="bg-white rounded-xl shadow p-4 space-y-2">
             <div className="flex justify-between items-center">
@@ -89,10 +102,14 @@ export default function MyBookings() {
               <strong>Guests:</strong> {b.guests.adults} Adults,{" "}
               {b.guests.children} Children
             </p>
-            <p className="text-sm font-semibold">Price: ${b.price}</p>
+            <div className="flex justify-between">
+              <span className="text-sm font-semibold ">Price:</span>
+              <span className="text-[#10e9dd]">${b.price}</span>
+            </div>
           </div>
         ))}
       </div>
+
       {/* ================= DESKTOP TABLE ================= */}
       <div className="hidden md:block overflow-x-auto bg-white rounded-xl shadow">
         <table className="w-full text-sm">
@@ -150,8 +167,9 @@ export default function MyBookings() {
           </div>
         )}
       </div>
-      <div className="hidden md:block overflow-x-auto bg-white rounded-xl shadow mt-12">
-        <h1 className="text-2xl font-bold mb-4">My Transfer</h1>
+
+      <div className="hidden md:block overflow-x-auto bg-white rounded-xl shadow mt-6">
+        <h1 className="text-2xl font-bold mb-4">My Booked Transfer</h1>
         <table className="w-full text-sm">
           <thead className="bg-[#10e9dd] text-white">
             <tr>
