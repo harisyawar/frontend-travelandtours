@@ -3,13 +3,13 @@ import React from "react";
 
 const HappyCustomer = () => {
   return (
-    <div>
+    <div className="w-full">
       <Image
-        src="/images/whyChooseUs.png" // replace with your image path or URL
+        src="/images/WhyChooseUs.png"
         alt="Happy Customer"
-        width={1600} // set desired width
-        height={200} // set desired height
-        className=" object-cover" // optional styling
+        width={1600}
+        height={200}
+        className="w-full h-auto object-contain"
         priority
       />
     </div>

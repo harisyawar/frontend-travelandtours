@@ -39,21 +39,21 @@ const Reviews = () => {
   const currentReview = reviews[current];
 
   return (
-    <section className="relative w-full min-h-[600px] md:min-h-[500px] lg:h-[600px] flex items-center py-4 ">
-      <div className="flex flex-col lg:flex-row w-full items-center justify-between px-4 md:pl-0 md:pr-16 z-20 gap-8">
-        {/* Left Side - Image (LG layout unchanged) */}
-        <div className="relative w-full lg:w-[80%] h-64 md:h-80 lg:h-[600px]">
+    <section className="relative w-full min-h-[500px] lg:min-h-[600px] flex items-center py-8">
+      <div className="flex flex-col lg:flex-row w-full items-center justify-between gap-8 lg:gap-0">
+        {/* Left Side - Image */}
+        <div className="relative w-full lg:w-[60%] h-[400px] md:h-[450px] lg:h-[550px]">
           <Image
-            src="/images/left Contents.png"
+            src="/images/Left Contents.png"
             alt="Happy Travelers Background"
             fill
-            className="object-cover"
+            className="object-contain object-left"
             priority
           />
         </div>
 
         {/* Right Side - Text + Review Card */}
-        <div className="flex flex-col items-center gap-4 lg:gap-6 w-full lg:w-auto">
+        <div className="flex flex-col items-center gap-4 lg:gap-6 w-full lg:w-[40%] px-4 lg:pr-8">
           {/* Heading */}
           <div className="flex flex-col items-center gap-2 text-center">
             <h4 className="font-serif text-[#10E9DD] !mb-0">Reviews</h4>
