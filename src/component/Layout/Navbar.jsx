@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { FaUser, FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";

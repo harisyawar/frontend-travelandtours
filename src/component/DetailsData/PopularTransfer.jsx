@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { getToursByCity } from "@/Services/TravelApis";
 import Image from "next/image";

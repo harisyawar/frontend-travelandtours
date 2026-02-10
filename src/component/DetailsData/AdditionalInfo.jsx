@@ -1,6 +1,4 @@
 // AdditionalInfo.jsx
-"use client";
-
 export default function AdditionalInfo({ info }) {
   return (
     <div className=" py-4">

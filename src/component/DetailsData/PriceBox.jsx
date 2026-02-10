@@ -1,5 +1,3 @@
-"use client";
-
 import { searchAtom } from "@/store/atoms";
 import { useAtom } from "jotai";
 import Link from "next/link";

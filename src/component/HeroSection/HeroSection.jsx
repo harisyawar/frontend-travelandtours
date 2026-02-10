@@ -1,13 +1,13 @@
-"use client";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import BookingBox from "./BookingBox";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
+import { useRouter } from "next/router";
 
 export default function HeroSection({ country, height }) {
   console.log(country, "2nd page");
-  const pathname = usePathname();
+  const router = useRouter();
+  const pathname = router.pathname;
 
   // Home = big hero, Other pages = small hero
   const finalHeight =

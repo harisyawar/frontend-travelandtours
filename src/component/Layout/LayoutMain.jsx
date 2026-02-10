@@ -1,5 +1,3 @@
-"use client";
-
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import { usePathname } from "next/navigation";
