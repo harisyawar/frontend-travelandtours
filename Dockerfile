@@ -1,25 +1,48 @@
-FROM node:22.21.1-alpine AS build
+# Build stage
+FROM node:22.21.1-alpine AS builder
+
+ENV NODE_ENV=development
 ENV NODE_OPTIONS="--max-old-space-size=8192"
-RUN mkdir /fe-nextjs
-WORKDIR /fe-nextjs
-COPY . /fe-nextjs/
-RUN npm install
+
+WORKDIR /app
+
+# Copy package files first (better layer caching)
+COPY package*.json ./
+
+# Install all dependencies including dev dependencies for building
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Build Next.js application
 RUN npm run build
 
-FROM node:22.21.1-alpine AS production
+# Production stage
+FROM node:22.21.1-alpine AS runner
+
 ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=8192"
-RUN mkdir /fe-nextjs
-WORKDIR /fe-nextjs
 
-# Copy necessary files from build stage
-COPY --from=build /fe-nextjs/.next ./.next
-COPY --from=build /fe-nextjs/public ./public
-COPY --from=build /fe-nextjs/package*.json ./
-COPY --from=build /fe-nextjs/src ./src
+WORKDIR /app
 
-# Install production dependencies only
+# Copy only necessary files from build stage
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/package*.json ./
+
+# Install only production dependencies
 RUN npm ci --omit=dev
 
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+USER nextjs
+
 EXPOSE 3000
-CMD ["npm", "start"]
+
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]
