@@ -1,5 +1,3 @@
-import { useRouter, useSearchParams } from "next/navigation";
-
 const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   if (totalPages <= 1) return null;
 

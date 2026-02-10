@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useState } from "react";
 import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 import { FcGoogle } from "react-icons/fc"; // Google icon

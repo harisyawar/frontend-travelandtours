@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { FaUser, FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { userAtom } from "@/store/atoms";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
   const router = useRouter();
+  const pathname = router.pathname;
 
   const [user, setUser] = useAtom(userAtom); // get current user
 

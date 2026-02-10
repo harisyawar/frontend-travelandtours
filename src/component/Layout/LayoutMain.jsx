@@ -1,9 +1,10 @@
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 
 const MainLayout = ({ children }) => {
-  const pathname = usePathname();
+  const router = useRouter();
+  const pathname = router.pathname;
 
   // List of paths where we DON'T want navbar and footer
   const hideLayoutPaths = [
