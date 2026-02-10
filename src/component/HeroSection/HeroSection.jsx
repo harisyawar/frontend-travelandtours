@@ -1,15 +1,16 @@
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import BookingBox from "./BookingBox";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
-import { useRouter } from "next/router";
 
 export default function HeroSection({ country, height }) {
   console.log(country, "2nd page");
-  const router = useRouter();
+  const [pathname, setPathname] = useState("/");
 
-  // Safe pathname access - fallback during SSG
-  const pathname = router.isReady ? router.pathname : "/";
+  useEffect(() => {
+    setPathname(window.location.pathname);
+  }, []);
 
   // Home = big hero, Other pages = small hero
   const finalHeight =

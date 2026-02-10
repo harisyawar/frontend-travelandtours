@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { FaUser, FaBars, FaTimes } from "react-icons/fa";
-import { useState } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom } from "@/store/atoms";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
+  const [pathname, setPathname] = useState("/");
 
-  // Safe pathname access - fallback during SSG
-  const pathname = router.isReady ? router.pathname : "/";
+  useEffect(() => {
+    setPathname(window.location.pathname);
+  }, []);
 
   const [user, setUser] = useAtom(userAtom); // get current user
 
@@ -23,7 +23,7 @@ export default function Navbar() {
   const handleLogout = () => {
     setUser(null); // clear user state (Jotai)
     localStorage.clear(); // remove everything from localStorage
-    router.push("/Login"); // redirect to login page
+    window.location.href = "/Login"; // redirect to login page
   };
 
   return (

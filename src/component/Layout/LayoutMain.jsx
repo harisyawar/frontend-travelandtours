@@ -1,12 +1,15 @@
+import { useState, useEffect } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import { useRouter } from "next/router";
 
 const MainLayout = ({ children }) => {
-  const router = useRouter();
+  const [pathname, setPathname] = useState("");
+  const [mounted, setMounted] = useState(false);
 
-  // Safe pathname access - fallback to empty string during SSG
-  const pathname = router.isReady ? router.pathname : "";
+  useEffect(() => {
+    setMounted(true);
+    setPathname(window.location.pathname);
+  }, []);
 
   // List of paths where we DON'T want navbar and footer
   const hideLayoutPaths = [
@@ -27,9 +30,12 @@ const MainLayout = ({ children }) => {
     "/verify-reset-otp",
     "/reset-password",
   ];
-  // Determine if navbar and footer should show
-  const showLayout = !hideLayoutPaths.includes(pathname);
-  const showLayoutFooter = !hideLayoutfooter.includes(pathname);
+
+  // During SSG/SSR, show both navbar and footer (safe default)
+  // After mount, check pathname
+  const showLayout = !mounted || !hideLayoutPaths.includes(pathname);
+  const showLayoutFooter = !mounted || !hideLayoutfooter.includes(pathname);
+
   return (
     <>
       {showLayout && <Navbar />}
