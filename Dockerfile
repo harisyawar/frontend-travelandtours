@@ -1,7 +1,6 @@
 # Build stage
 FROM node:22.21.1-alpine AS builder
 
-ENV NODE_ENV=development
 ENV NODE_OPTIONS="--max-old-space-size=8192"
 
 WORKDIR /app
@@ -15,7 +14,8 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Build Next.js application
+# Build Next.js application with production NODE_ENV
+ENV NODE_ENV=production
 RUN npm run build
 
 # Production stage
