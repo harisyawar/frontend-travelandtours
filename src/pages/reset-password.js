@@ -173,3 +173,8 @@ export default function ResetPassword() {
     </div>
   );
 }
+
+// Disable static generation for pages using useRouter
+export async function getServerSideProps() {
+  return { props: {} };
+}

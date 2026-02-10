@@ -124,4 +124,9 @@ const ForgotPassword = () => {
   );
 };
 
+// Disable static generation for pages using useRouter
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default ForgotPassword;

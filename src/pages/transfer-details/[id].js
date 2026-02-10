@@ -21,7 +21,7 @@ export default function TransferDetailPage() {
   const { id } = router.query;
 
   const [transfer, setTransfer] = useState(null);
-  
+
   useEffect(() => {
     // Only run when router is ready and we have an id
     if (!router.isReady || !id) return;
@@ -93,4 +93,9 @@ export default function TransferDetailPage() {
       {/* <TourApi city_region_id={transfer.city_region_id} /> */}
     </main>
   );
+}
+
+// Disable static generation for dynamic routes
+export async function getServerSideProps() {
+  return { props: {} };
 }

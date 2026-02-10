@@ -223,4 +223,9 @@ const Signup = () => {
   );
 };
 
+// Disable static generation for pages using useRouter
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default Signup;

@@ -9,7 +9,6 @@ const BASE_IMAGE_URL =
   "https://northpointtravel.s3.eu-north-1.amazonaws.com/images/";
 
 export default function SwiperCarousel({ images }) {
-  // ✅ normalize images to array
   const normalizedImages = Array.isArray(images)
     ? images
     : images

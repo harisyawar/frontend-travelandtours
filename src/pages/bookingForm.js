@@ -455,3 +455,7 @@ export default function BookingForm() {
     </div>
   );
 }
+// Disable static generation for pages using useRouter
+export async function getServerSideProps() {
+  return { props: {} };
+}

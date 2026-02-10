@@ -136,4 +136,9 @@ const TourDetails = () => {
   );
 };
 
+// Disable static generation for dynamic routes
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default TourDetails;
