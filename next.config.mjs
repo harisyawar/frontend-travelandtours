@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   images: {
+    unoptimized: true, // Disable Image Optimization API for standalone builds
     remotePatterns: [
       {
         protocol: "https",
