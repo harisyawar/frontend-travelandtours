@@ -88,9 +88,8 @@ const BookingBox = ({ country }) => {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`relative pb-1 text-sm font-medium ${
-              activeTab === tab ? "text-white" : "text-white/60"
-            }`}
+            className={`relative pb-1 text-sm font-medium ${activeTab === tab ? "text-white" : "text-white/60"
+              }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
             {activeTab === tab && (
@@ -217,9 +216,8 @@ const BookingBox = ({ country }) => {
           },
         }}
         onClick={handleSearch}
-        className={`block text-center bg-[#10E9DD] py-3 rounded-md mt-4 text-black font-medium ${
-          !destination ? "opacity-50 pointer-events-none" : ""
-        }`}
+        className={`block text-center bg-[#10E9DD] py-3 rounded-md mt-4 text-black font-medium ${!destination ? "opacity-50 pointer-events-none" : ""
+          }`}
         prefetch={true}
       >
         Search →

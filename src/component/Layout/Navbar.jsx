@@ -14,9 +14,8 @@ export default function Navbar() {
 
   // Determine navbar background
   const isTransparent = pathname === "/" || pathname === "/Search";
-  const navbarClasses = `w-full z-50 relative ${
-    isTransparent ? "bg-transparent" : "bg-[#F6FFFF] shadow-md"
-  }`;
+  const navbarClasses = `w-full z-50 relative ${isTransparent ? "bg-transparent" : "bg-[#F6FFFF] shadow-md"
+    }`;
 
   // Logout handler
   const handleLogout = () => {
@@ -33,9 +32,8 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className={`font-bold text-xl font-serif ${
-              isTransparent ? "text-white" : "text-black"
-            }`}
+            className={`font-bold text-xl font-serif ${isTransparent ? "text-white" : "text-black"
+              }`}
           >
             TourANDTravel
           </Link>
@@ -81,20 +79,18 @@ export default function Navbar() {
             {user ? (
               <button
                 onClick={handleLogout}
-                className={`px-4 py-2 rounded ${
-                  isTransparent
+                className={`px-4 py-2 rounded ${isTransparent
                     ? "bg-[#ffda32] text-black"
                     : "bg-[#ffda32] text-black"
-                }`}
+                  }`}
               >
                 Logout
               </button>
             ) : (
               <Link href="/Login">
                 <FaUser
-                  className={`cursor-pointer ${
-                    isTransparent ? "text-white" : "text-black"
-                  }`}
+                  className={`cursor-pointer ${isTransparent ? "text-white" : "text-black"
+                    }`}
                 />
               </Link>
             )}
@@ -103,9 +99,8 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className={`md:hidden text-2xl cursor-pointer ${
-                isTransparent ? "text-white" : "text-black"
-              }`}
+              className={`md:hidden text-2xl cursor-pointer ${isTransparent ? "text-white" : "text-black"
+                }`}
             >
               <FaBars />
             </button>

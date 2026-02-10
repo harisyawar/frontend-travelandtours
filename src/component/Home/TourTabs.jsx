@@ -149,11 +149,10 @@ const TourTabs = () => {
             className={`
         px-6 py-2 rounded text-sm font-medium capitalize
         transition-all duration-300
-        ${
-          activeCountry.id === country.id
-            ? "bg-[#3FD0D4] text-white shadow-sm"
-            : "bg-[#F6FFFF] text-[#464646]  hover:bg-[#3FD0D4] hover:text-white"
-        }
+        ${activeCountry.id === country.id
+                ? "bg-[#3FD0D4] text-white shadow-sm"
+                : "bg-[#F6FFFF] text-[#464646]  hover:bg-[#3FD0D4] hover:text-white"
+              }
       `}
           >
             {country.name}
