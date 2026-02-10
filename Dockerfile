@@ -11,7 +11,7 @@ COPY package*.json ./
 # Install all dependencies including dev dependencies for building
 RUN npm ci
 
-# Copy source code
+# Copy source code (includes .env for NEXT_PUBLIC_* vars needed at build time)
 COPY . .
 
 # Build Next.js application with production NODE_ENV

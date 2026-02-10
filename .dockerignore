@@ -4,11 +4,8 @@ npm - debug.log
     .gitignore
 README.md
     .next
-    .env
-    .env.local
-    .env.*.local
-        .vercel
-        .DS_Store
+    .vercel
+    .DS_Store
     *.pem
 dist
 build
