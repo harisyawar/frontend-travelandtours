@@ -1,23 +1,23 @@
 node_modules
-npm-debug.log
-.git
-.gitignore
+npm - debug.log
+    .git
+    .gitignore
 README.md
-.next
-.env
-.env.local
-.env.*.local
-.vercel
-.DS_Store
-*.pem
+    .next
+    .env
+    .env.local
+    .env.*.local
+        .vercel
+        .DS_Store
+    *.pem
 dist
 build
 coverage
-.idea
-.vscode
-*.swp
-*.swo
-*~
+    .idea
+    .vscode
+    *.swp
+    *.swo
+    * ~
 .eslintcache
-.turbo
+        .turbo
 out
