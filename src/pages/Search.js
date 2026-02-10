@@ -141,7 +141,7 @@ export default function SearchPage({ country }) {
               <input
                 type="text"
                 placeholder="Type anything..."
-                className="flex-1 px-4 py-3 outline-none text-gray-800"
+                className="flex-1 px-2 py-3 outline-none text-gray-800"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />

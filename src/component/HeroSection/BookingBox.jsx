@@ -78,7 +78,7 @@ const BookingBox = ({ country }) => {
   return (
     <div
       ref={boxRef}
-      className="block w-[300px] md:w-[380px] bg-white/20 backdrop-blur-lg rounded-xl p-4 md:p-6 text-white border border-white/30"
+      className="block w-[300px] md:w-[380px] bg-white/20 backdrop-blur-lg rounded-xl p-4 md:p-6 text-white border border-white/30 mt-8 md:mt-8"
     >
       <h3 className="text-xl font-semibold mb-3 text-center font-serif">
         Book your Transfer and Tour
@@ -218,7 +218,7 @@ const BookingBox = ({ country }) => {
             type: activeTab,
           },
         }}
-        onClick={handleSearch} 
+        onClick={handleSearch}
         className={`block text-center bg-[#10E9DD] py-3 rounded-md mt-4 text-black font-medium ${
           !destination ? "opacity-50 pointer-events-none" : ""
         }`}

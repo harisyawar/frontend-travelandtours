@@ -1,4 +1,4 @@
-export const BASE_URL = "https://northpointtravel.com/api/v1";
+export const BASE_URL = process.env.NEXT_PUBLIC_NORTHPOINT_API_URL;
 
 export const getToursByCity = async (city_region_id) => {
   const res = await fetch(`${BASE_URL}/B2C/tour/?city=${city_region_id}`, {

@@ -140,17 +140,12 @@ export default function Navbar() {
         {/* Menu */}
         <ul className="mt-20 flex flex-col gap-4 px-6 text-lg">
           <li onClick={() => setOpen(false)}>
-            <Link href="/">Home</Link>
-          </li>
-          <li onClick={() => setOpen(false)}>
             <Link href="/destinations">Destination</Link>
           </li>
           <li onClick={() => setOpen(false)}>
-            <Link href="/tours">Tour Types</Link>
+            <Link href="/my-bookings">Bookings</Link>
           </li>
-          <li onClick={() => setOpen(false)}>
-            <Link href="/blog">Blog</Link>
-          </li>
+
           <li onClick={() => setOpen(false)}>
             <Link href="/contact">Contact Us</Link>
           </li>

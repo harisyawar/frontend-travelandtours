@@ -7,7 +7,7 @@ const WhatsIncludedAndPickup = ({ included = [], excluded = [] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="max-w-4xl py-8 space-y-10">
+    <div className="max-w-4xl py-4 space-y-10">
       {/* What's Included */}
       <div>
         <h2 className="font-bold text-3xl mb-6">What's Included</h2>
@@ -48,7 +48,7 @@ const WhatsIncludedAndPickup = ({ included = [], excluded = [] }) => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0  bg-white/80 backdrop-blur-80 flex items-center justify-center z-50">
-          <div className="bg-white border rounded-lg p-6 max-w-3xl w-full relative max-h-[80vh] overflow-y-auto">
+          <div className="bg-white  border rounded-lg p-6 max-w-[302px] md:max-w-3xl w-full relative max-h-[80vh] overflow-y-auto">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl font-bold"

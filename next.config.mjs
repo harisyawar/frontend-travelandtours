@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["northpointtravel.s3.eu-north-1.amazonaws.com"], // ✅ allow this external domain
+    domains: [
+      "northpointtravel.s3.eu-north-1.amazonaws.com",
+      "source.unsplash.com", // ✅ allow this external domain
+    ],
   },
 };
 

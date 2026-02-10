@@ -20,11 +20,11 @@ You can cancel up to 24 hours in advance of the experience for a full refund. Fo
   };
 
   return (
-    <div className=" bg-white   max-w-4xl  space-y-6">
+    <div className=" bg-white   max-w-4xl   space-y-6">
       {/* Cancellation Policy */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className=" rounded-md ">
-          <h3 className="font-bold  text-3xl mb-2">Cancellation Policy</h3>
+          <h3 className="font-bold  text-3xl py-4">Cancellation Policy</h3>
           <p className="text-gray-700 mb-3">
             You can cancel up to 24 hours in advance of the experience for a
             full refund.
@@ -41,7 +41,7 @@ You can cancel up to 24 hours in advance of the experience for a full refund. Fo
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0  bg-white/80 backdrop-blur-80 flex items-center justify-center z-50">
-          <div className="bg-white border rounded-lg p-6 max-w-2xl w-full relative max-h-[80vh] overflow-y-auto">
+          <div className="bg-white border rounded-lg p-6  max-w-[302px] w-full relative max-h-[80vh] overflow-y-auto">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl font-bold"

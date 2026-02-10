@@ -12,7 +12,7 @@ export default function HeroSection({ country, height }) {
   // Home = big hero, Other pages = small hero
   const finalHeight =
     height ||
-    (pathname === "/" ? "h-[600px]" : " h-[550px] md:h-[650px] lg:h-[500px]");
+    (pathname === "/" ? "h-[600px]" : " h-[550px] md:h-[670px] lg:h-[500px]");
 
   return (
     <>
@@ -40,14 +40,14 @@ export default function HeroSection({ country, height }) {
         <div className="relative z-20 mx-auto h-full flex flex-col lg:flex-row items-center justify-center lg:justify-around">
           {/* Left Content */}
           <div className="max-w-xl text-white text-center lg:text-left">
-            <h1 className="font-serif max-w-[472px] text-2xl md:text-3xl lg:text-6xl font-bold">
+            <h1 className="font-serif max-w-[472px] text-2xl md:text-3xl lg:text-6xl font-bold ">
               Dare to <span className="text-[#10E9DD]">Live</span>
               <br />
               the <span className="text-[#10E9DD]">life </span>
               you've wanted
             </h1>
 
-            <p className="  mt-0 lg:mt-4  text-[12px] md:text-base text-white/90 max-w-[430px] px-3 md:px-0">
+            <p className="  hidden lg:block mt-0 lg:mt-4  text-[12px] md:text-base text-white/90 max-w-[430px] px-3 md:px-0">
               We would love to help you realize your travel dreams, to start
               anew. Take the first steps towards making your dream a reality.
             </p>

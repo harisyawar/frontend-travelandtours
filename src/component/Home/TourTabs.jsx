@@ -143,7 +143,7 @@ const TourTabs = () => {
       </p>
 
       {/* Country Selector Buttons */}
-      <div className="flex flex-wrap justify-center gap-4 my-10">
+      <div className="flex flex-wrap justify-items-start md:justify-center  gap-4 my-10">
         {countriesData.map((country) => (
           <button
             key={country.id}

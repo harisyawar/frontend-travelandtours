@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Pagination from "@/component/Pagination/Pagination";
 import React, { useEffect, useState } from "react";
+import { MdOutlineTimer } from "react-icons/md";
 
 export default function CardDesign({
   tours = [],
@@ -85,6 +86,7 @@ export default function CardDesign({
                   />
 
                   <div className="flex items-center gap-2 mt-2">
+                    <MdOutlineTimer className="text-[#3FD0D4] font-bold w-6 h-6" />
                     <p className="text-sm text-gray-500">{tour.duration}</p>
                   </div>
                 </div>
