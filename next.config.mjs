@@ -2,9 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      "northpointtravel.s3.eu-north-1.amazonaws.com",
-      "source.unsplash.com", // ✅ allow this external domain
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "northpointtravel.s3.eu-north-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "source.unsplash.com",
+      },
     ],
   },
 };
