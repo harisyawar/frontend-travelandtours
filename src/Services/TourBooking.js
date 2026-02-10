@@ -1,17 +1,16 @@
 // api.js
 import axios from "axios";
 
-console.log("Base URL:", process.env.NEXT_PUBLIC_TOURS_URL); // ✅ check baseURL in console
+console.log("Base URL:", process.env.NEXT_PUBLIC_TOURS_URL);
 
 export const travelClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_TOURS_URL, // your backend URL
+  baseURL: process.env.NEXT_PUBLIC_TOURS_URL,
   headers: {
     "Content-Type": "application/json",
   },
-  // withCredentials removed - not needed for public APIs and causes CORS issues
 });
 
-console.log("Axios instance baseURL:", travelClient.defaults.baseURL); // ✅ also check axios instance
+console.log("Axios instance baseURL:", travelClient.defaults.baseURL);
 
 export const createBooking = async (bookingData) => {
   const res = await travelClient.post(
