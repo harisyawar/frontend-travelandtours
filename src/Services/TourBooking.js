@@ -8,7 +8,7 @@ export const travelClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // cookies/auth
+  // withCredentials removed - not needed for public APIs and causes CORS issues
 });
 
 console.log("Axios instance baseURL:", travelClient.defaults.baseURL); // ✅ also check axios instance
