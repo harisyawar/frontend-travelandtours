@@ -23,4 +23,9 @@ const Success = () => {
   );
 };
 
+// Disable static generation - layout uses useRouter
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default Success;
