@@ -8,7 +8,7 @@ import { userAtom } from "@/store/atoms";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  
+
   // Safe pathname access - fallback during SSG
   const pathname = router.isReady ? router.pathname : "/";
 

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 const MainLayout = ({ children }) => {
   const router = useRouter();
-  
+
   // Safe pathname access - fallback to empty string during SSG
   const pathname = router.isReady ? router.pathname : "";
 
