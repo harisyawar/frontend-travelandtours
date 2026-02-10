@@ -21,9 +21,10 @@ export default function TransferDetailPage() {
   const { id } = router.query;
 
   const [transfer, setTransfer] = useState(null);
-  console.log(transfer);
+  
   useEffect(() => {
-    if (!id) return;
+    // Only run when router is ready and we have an id
+    if (!router.isReady || !id) return;
 
     const fetchTransfer = async () => {
       try {
@@ -35,7 +36,7 @@ export default function TransferDetailPage() {
     };
 
     fetchTransfer();
-  }, [id]);
+  }, [router.isReady, id]);
 
   if (!transfer) return <p>Loading...</p>;
 

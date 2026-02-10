@@ -20,12 +20,11 @@ const TourDetails = () => {
 
   const [tour, setTour] = useState(null);
   const [relatedTours, setRelatedTours] = useState([]);
-  console.log(relatedTours, "tour");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [searchState] = useAtom(searchAtom);
-  const city_region_id = searchState.city_region_id; // ✅ sirf ID
+  const city_region_id = searchState.city_region_id;
 
   const renderStars = (rating) => {
     const stars = [];
@@ -40,7 +39,8 @@ const TourDetails = () => {
   };
 
   useEffect(() => {
-    if (!id) return;
+    // Only run when router is ready and we have an id
+    if (!router.isReady || !id) return;
 
     const fetchData = async () => {
       setLoading(true);
@@ -53,7 +53,6 @@ const TourDetails = () => {
         const cityId = city_region_id?.id; // extract ID from object
         if (cityId) {
           const related = await getToursByCity(cityId); // will now return array
-          console.log(related, "data"); // ✅ ab yahan array milega
           setRelatedTours(related);
         }
       } catch (err) {
@@ -64,7 +63,7 @@ const TourDetails = () => {
     };
 
     fetchData();
-  }, [id, city_region_id]);
+  }, [router.isReady, id, city_region_id]);
 
   if (loading) return <div className="text-center py-20">Loading...</div>;
   if (error)

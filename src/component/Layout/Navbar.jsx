@@ -80,8 +80,8 @@ export default function Navbar() {
               <button
                 onClick={handleLogout}
                 className={`px-4 py-2 rounded ${isTransparent
-                    ? "bg-[#ffda32] text-black"
-                    : "bg-[#ffda32] text-black"
+                  ? "bg-[#ffda32] text-black"
+                  : "bg-[#ffda32] text-black"
                   }`}
               >
                 Logout
