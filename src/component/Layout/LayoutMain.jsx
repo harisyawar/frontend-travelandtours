@@ -4,7 +4,9 @@ import { useRouter } from "next/router";
 
 const MainLayout = ({ children }) => {
   const router = useRouter();
-  const pathname = router.pathname;
+  
+  // Safe pathname access - fallback to empty string during SSG
+  const pathname = router.isReady ? router.pathname : "";
 
   // List of paths where we DON'T want navbar and footer
   const hideLayoutPaths = [

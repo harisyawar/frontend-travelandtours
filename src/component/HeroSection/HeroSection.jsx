@@ -7,7 +7,9 @@ import { useRouter } from "next/router";
 export default function HeroSection({ country, height }) {
   console.log(country, "2nd page");
   const router = useRouter();
-  const pathname = router.pathname;
+  
+  // Safe pathname access - fallback during SSG
+  const pathname = router.isReady ? router.pathname : "/";
 
   // Home = big hero, Other pages = small hero
   const finalHeight =
