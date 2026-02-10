@@ -1,8 +1,6 @@
-"use client";
-
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { message, Spin } from "antd";
 import { useAtom } from "jotai";
 
@@ -27,7 +25,6 @@ const loginSchema = Yup.object().shape({
 
 const Login = () => {
   const router = useRouter();
-  const searchParams = useSearchParams(); // for reading query params if needed
   const [isLoading, setIsLoading] = useState(false);
   const googleButtonRef = useRef(null);
   const [, setUser] = useAtom(userAtom);

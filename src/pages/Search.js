@@ -1,12 +1,10 @@
-"use client";
-
 import HeroSection from "@/component/HeroSection/HeroSection";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FaSearch, FaFilter, FaTimes } from "react-icons/fa";
 import Pagination from "@/component/Pagination/Pagination";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { getToursByCity } from "@/Services/TravelApis";
 import CardDesign from "@/component/carddesign/CardDesign";
 import { getTransfersByCity } from "@/Services/TourBooking";
@@ -18,17 +16,17 @@ export default function SearchPage({ country }) {
   const [sidebarOpen, setSidebarOpen] = useState(false); // mobile toggle
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
-  const searchParams = useSearchParams();
-  const city_region_id = searchParams.get("city_region_id");
-  const adult = searchParams.get("adult");
-  const child = searchParams.get("child");
+  const router = useRouter();
+  const city_region_id = router.query.city_region_id;
+  const adult = router.query.adult;
+  const child = router.query.child;
 
   const [priceRange, setPriceRange] = useState(500);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDestinations, setSelectedDestinations] = useState([]);
   const [selectedReviews, setSelectedReviews] = useState([]);
   console.log(tours, "tour");
-  const type = searchParams.get("type");
+  const type = router.query.type;
 
   useEffect(() => {
     if (!city_region_id || !type) return;
@@ -123,9 +121,8 @@ export default function SearchPage({ country }) {
 
         {/* Sidebar */}
         <aside
-          className={`fixed top-0 left-0 h-full max-h-screen w-3/4 max-w-xs bg-white z-50 p-6 space-y-6 transform transition-transform overflow-hidden duration-300 ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } overflow-y-auto lg:overflow-y-visible lg:translate-x-0 lg:relative lg:w-1/4 lg:block`}
+          className={`fixed top-0 left-0 h-full max-h-screen w-3/4 max-w-xs bg-white z-50 p-6 space-y-6 transform transition-transform overflow-hidden duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } overflow-y-auto lg:overflow-y-visible lg:translate-x-0 lg:relative lg:w-1/4 lg:block`}
         >
           {/* Close Button */}
           <div className="lg:hidden flex justify-end mb-4">

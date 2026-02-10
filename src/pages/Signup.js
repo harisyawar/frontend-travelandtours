@@ -1,8 +1,6 @@
-"use client";
-
 import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { message, Spin } from "antd";
 
 import * as Yup from "yup";
@@ -135,9 +133,8 @@ const Signup = () => {
                   type="text"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 ${
-                    errors.name ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 ${errors.name ? "border-red-500" : "border-gray-300"
+                    }`}
                   placeholder="Enter your name"
                   disabled={isLoading}
                 />
@@ -159,9 +156,8 @@ const Signup = () => {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 ${
-                    errors.email ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 ${errors.email ? "border-red-500" : "border-gray-300"
+                    }`}
                   placeholder="Enter your email"
                   disabled={isLoading}
                 />
@@ -183,9 +179,8 @@ const Signup = () => {
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={`flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 ${
-                    errors.password ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`flex h-10 w-full rounded-md border px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 ${errors.password ? "border-red-500" : "border-gray-300"
+                    }`}
                   placeholder="At least 8 characters"
                   disabled={isLoading}
                 />

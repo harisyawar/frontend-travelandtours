@@ -1,7 +1,5 @@
-"use client";
-
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { Spin, message } from "antd";
 import { authAPI } from "@/Services/api";
 
@@ -23,9 +21,8 @@ const resetPasswordSchema = Yup.object().shape({
 
 export default function ResetPassword() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const userId = searchParams.get("userId");
+  const userId = router.query.userId;
 
   const [formData, setFormData] = useState({
     password: "",

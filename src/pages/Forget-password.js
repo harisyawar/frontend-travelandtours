@@ -1,7 +1,5 @@
-"use client";
-
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { message, Spin } from "antd";
 import * as Yup from "yup";
 import { authAPI } from "@/Services/api";

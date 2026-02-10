@@ -1,16 +1,13 @@
-"use client";
-
 import React, { useEffect, useRef, useState } from "react";
 import { Spin, message } from "antd";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { authAPI } from "@/Services/api";
 
 export default function VerifyForgotOtp() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const userId = searchParams.get("userId");
-  const email = searchParams.get("email");
+  const userId = router.query.userId;
+  const email = router.query.email;
 
   const [otpDigits, setOtpDigits] = useState(Array(6).fill(""));
   const [isLoading, setIsLoading] = useState(false);
@@ -127,7 +124,7 @@ export default function VerifyForgotOtp() {
                 {isLoading ? (
                   <>
                     <Spin size="small" />
-                    
+
                   </>
                 ) : (
                   "Verify OTP"

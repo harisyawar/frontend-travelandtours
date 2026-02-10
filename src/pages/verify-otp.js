@@ -1,7 +1,5 @@
-"use client";
-
 import React, { useState, useEffect, useRef } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { message, Spin } from "antd";
 
@@ -10,12 +8,11 @@ import { authAPI } from "@/Services/api";
 
 const OtpVerification = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [, setUser] = useAtom(userAtom);
 
-  const email = searchParams.get("email");
-  const userId = searchParams.get("userId");
-  const isFromLogin = searchParams.get("isFromLogin") === "true";
+  const email = router.query.email;
+  const userId = router.query.userId;
+  const isFromLogin = router.query.isFromLogin === "true";
 
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
@@ -133,9 +130,8 @@ const OtpVerification = () => {
                 maxLength={1}
                 disabled={isLoading}
                 onChange={(e) => handleOtpChange(i, e.target.value)}
-                className={`w-12 h-14 text-2xl font-bold text-center border-[#10E9DD] border-2 rounded-lg ${
-                  error ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-12 h-14 text-2xl font-bold text-center border-[#10E9DD] border-2 rounded-lg ${error ? "border-red-500" : "border-gray-300"
+                  }`}
               />
             ))}
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { useRouter } from "next/navigation"; // ✅ Next.js router
+import { useRouter } from "next/router"; // ✅ Next.js router
 import { useAtom } from "jotai";
 import { message } from "antd";
 import { userAtom } from "../store/atoms";
