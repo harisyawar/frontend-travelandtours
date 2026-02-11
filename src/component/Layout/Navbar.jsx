@@ -42,28 +42,24 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex items-center gap-8 font-medium">
-            <li>
-              <Link
-                href="/destinations"
-                className={isTransparent ? "text-white" : "text-black"}
-              >
-                Destination
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/tours"
-                className={isTransparent ? "text-white" : "text-black"}
-              >
-                Tour Types
-              </Link>
-            </li>
+            {user && (
+              <>
+                <li>
+                  <Link
+                    href="/my-bookings"
+                    className={isTransparent ? "text-white" : "text-black"}
+                  >
+                    Bookings
+                  </Link>
+                </li>
+              </>
+            )}
             <li>
               <Link
                 href="/my-bookings"
                 className={isTransparent ? "text-white" : "text-black"}
               >
-                Bookings
+                About us
               </Link>
             </li>
             <li>
@@ -133,26 +129,30 @@ export default function Navbar() {
         </button>
 
         {/* Menu */}
-        <ul className="mt-20 flex flex-col gap-4 px-6 text-lg">
-          <li onClick={() => setOpen(false)}>
-            <Link href="/destinations">Destination</Link>
-          </li>
-          <li onClick={() => setOpen(false)}>
-            <Link href="/my-bookings">Bookings</Link>
-          </li>
 
-          <li onClick={() => setOpen(false)}>
-            <Link href="/contact">Contact Us</Link>
-          </li>
-          {/* Mobile Logout Button */}
-          {user && (
-            <li onClick={handleLogout}>
-              <button className="w-full text-left text-red-500 font-medium">
-                Logout
-              </button>
+        <>
+          <ul className="mt-20 flex flex-col gap-4 px-6 text-lg">
+            <li onClick={() => setOpen(false)}>
+              <Link href="/contact">About Us</Link>
             </li>
-          )}
-        </ul>
+
+            <li onClick={() => setOpen(false)}>
+              <Link href="/contact">Contact Us</Link>
+            </li>
+            {user && (
+              <>
+                <li onClick={() => setOpen(false)}>
+                  <Link href="/my-bookings">Bookings</Link>
+                </li>
+                <li onClick={handleLogout}>
+                  <button className="w-full text-left text-red-500 font-medium">
+                    Logout
+                  </button>
+                </li>
+              </>
+            )}
+          </ul>
+        </>
       </div>
     </>
   );

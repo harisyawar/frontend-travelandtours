@@ -42,7 +42,7 @@ export const GoogleAuthButton = () => {
     <button
       type="button"
       onClick={handleGoogleClick}
-      className="flex items-center gap-2 rounded border border-gray-300 bg-white px-[6.7rem] py-2 hover:bg-gray-100"
+      className="inline-flex w-full items-center justify-center rounded-md border border-gray-400 px-3.5 py-2.5 font-semibold leading-7 "
     >
       <FcGoogle className="w-6 h-6" /> {/* Google icon */}
       <span className="text-sm font-medium text-gray-700">

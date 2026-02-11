@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function TravelerPhoto() {
   return (
     <section className="max-w-3xl   py-6">
-      <h2 className="font-bold  text-3xl mb-4">Traveler Photos</h2>
+      <h2 className="font-bold text-3xl mb-6">Traveler Photos</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Left big image */}

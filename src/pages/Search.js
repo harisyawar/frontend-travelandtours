@@ -26,7 +26,8 @@ export default function SearchPage({ country }) {
   const [selectedDestinations, setSelectedDestinations] = useState([]);
   const [selectedReviews, setSelectedReviews] = useState([]);
   console.log(tours, "tour");
-  const type = router.query.type;
+  const type = searchParams.get("type");
+  const hasTour = tours && tours.length > 0;
 
   useEffect(() => {
     if (!city_region_id || !type) return;
@@ -138,7 +139,7 @@ export default function SearchPage({ country }) {
               <input
                 type="text"
                 placeholder="Type anything..."
-                className="flex-1 px-2 py-3 outline-none text-gray-800"
+                className="flex-1  py-3 outline-none text-gray-800"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -253,7 +254,6 @@ export default function SearchPage({ country }) {
           </button>
         </aside>
 
-        {/* Tours Grid */}
         <CardDesign
           tours={filteredTours}
           currentPage={currentPage}

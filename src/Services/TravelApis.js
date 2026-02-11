@@ -20,7 +20,5 @@ export const getTourById = async (id) => {
 
   const json = await res.json();
 
-  // API response me tour object kis key me hai, check karo
-  // Adjust accordingly: e.g., json.tour ya json.data
   return json.tour || json.data || null;
 };

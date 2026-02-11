@@ -8,6 +8,7 @@ import {
   Instagram,
   Linkedin,
 } from "lucide-react";
+import Link from "next/link";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -30,19 +31,12 @@ const Footer = () => {
             <h4 className="text-white font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="hover:text-white transition">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Browse Hotels
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  My Bookings
-                </a>
+                <Link
+                  href="/my-bookings"
+                  className="hover:text-white transition"
+                >
+                  Bookings
+                </Link>
               </li>
               <li>
                 <a href="#" className="hover:text-white transition">

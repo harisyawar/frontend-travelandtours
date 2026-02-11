@@ -1,6 +1,8 @@
-import { searchAtom } from "@/store/atoms";
+import { searchAtom, userAtom } from "@/store/atoms";
+import { message } from "antd";
 import { useAtom } from "jotai";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Children } from "react";
 
 const getTransferRate = (transferRates, totalPersons) => {
@@ -17,16 +19,35 @@ const PriceBox = ({ tour }) => {
   console.log(tour, "data11");
   const [search] = useAtom(searchAtom);
   const [data] = useAtom(searchAtom);
+  const [user] = useAtom(userAtom);
+  const router = useRouter();
   const type = data?.type;
   console.log(type, "type ");
   const adults = search.adults || 0;
   const children = search.children || 0;
+  const handleBookNow = () => {
+    if (!user) {
+      message.error("Please login first to book!");
+      localStorage.setItem(
+        "redirectAfterLogin",
+        `/bookingForm?id=${tour._id}&type=${type}`,
+      );
+      router.push("/Login");
+      return;
+    }
+
+    router.push({
+      pathname: "/bookingForm",
+      query: { id: tour._id, type },
+    });
+  };
 
   // per person prices
   const adultPrice = tour.ticketPriceAdult ?? tour.sharedTransferAdult ?? 0;
 
   const childPrice = tour.ticketPriceChild ?? tour.sharedTransferChild ?? 0;
-
+  console.log(adultPrice);
+  console.log(childPrice);
   // totals
   const adultTotal = adultPrice * adults;
   const childTotal = childPrice * children;
@@ -44,11 +65,13 @@ const PriceBox = ({ tour }) => {
   // grand total
   const grandTotal = adultTotal + childTotal + transferTotal;
   const grandTotalFixed = Number(grandTotal.toFixed(2));
-
+  console.log(grandTotal);
   return (
     <div className="w-full max-w-md sticky top-24 self-start bg-white shadow-xl rounded-2xl p-6 space-y-6 border border-gray-100">
       {/* Header */}
-      <h4 className="text-lg font-semibold text-gray-800">Booking Summary</h4>
+      <h4 className="text-lg font-semibold text-gray-800 font-serif">
+        Booking Summary
+      </h4>
 
       {/* Info Boxes */}
       <div className="grid grid-cols-2 gap-4">
@@ -83,15 +106,12 @@ const PriceBox = ({ tour }) => {
         </span>
       </div>
 
-      <Link
-        href={{
-          pathname: "/bookingForm",
-          query: { id: tour._id, type },
-        }}
-        className="w-full bg-[#10E9DD] hover:bg-[#0fcfc4] transition text-white py-3 rounded-xl font-semibold text-base shadow-md flex items-center justify-center gap-2"
+      <button
+        onClick={handleBookNow}
+        className="w-full bg-[#ffda32] hover:bg-[#f3cb1a] transition text-white py-3 rounded-xl font-semibold text-base shadow-md flex items-center justify-center gap-2"
       >
         Book Now <span>→</span>
-      </Link>
+      </button>
     </div>
   );
 };

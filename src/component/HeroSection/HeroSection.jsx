@@ -31,7 +31,7 @@ export default function HeroSection({ country, height }) {
             src="/images/heroBg.png"
             alt="Tropical Island"
             fill
-            priority
+            priority={true}
             className="object-cover"
           />
         </div>

@@ -19,6 +19,7 @@ import {
 } from "@/Services/TourBooking";
 import { CountryDropdown } from "@/component/Countrydropdown/Countrydropdown";
 import Image from "next/image";
+import { message } from "antd";
 
 // Stripe
 const stripePromise = loadStripe(
@@ -36,7 +37,6 @@ const getTransferRate = (transferRates, totalPersons) => {
 
 // ---------- Stripe Checkout Form ----------
 const CheckoutForm = ({ intentId, bookingData, onSuccess, type }) => {
-  console.log(type, "typeha ");
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -68,7 +68,7 @@ const CheckoutForm = ({ intentId, bookingData, onSuccess, type }) => {
       });
 
       if (error) {
-        alert(error.message);
+        message.error(error.message);
         return;
       }
 
@@ -83,11 +83,13 @@ const CheckoutForm = ({ intentId, bookingData, onSuccess, type }) => {
         }
         onSuccess();
       } else {
-        alert("Payment not confirmed yet. Please wait a moment and try again.");
+        message.error(
+          "Payment not confirmed yet. Please wait a moment and try again.",
+        );
       }
     } catch (err) {
       console.error(err);
-      alert("Payment failed");
+      message.error("Payment failed");
     } finally {
       setLoading(false);
     }
@@ -166,30 +168,50 @@ export default function BookingForm() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const adultTotal = adults * (tour?.ticketPriceAdult || 0);
-  const childTotal = children * (tour?.ticketPriceChild || 0);
-  const transferTotal =
-    getTransferRate(tour?.transferRates, totalPersons) * totalPersons;
-  const grandTotal = adultTotal + childTotal + transferTotal;
-  // Handle Book Now click → create payment intent
-  const handleBookNow = async () => {
-    if (!userId) return alert("Please login first");
+  // ---------- Inside BookingForm ----------
 
-    const adultTotal = adults * (tour?.ticketPriceAdult || 0);
-    const childTotal = children * (tour?.ticketPriceChild || 0);
-    const transferTotal =
-      getTransferRate(tour?.transferRates, totalPersons) * totalPersons;
-    const grandTotal = adultTotal + childTotal + transferTotal;
+  // Compute totals only once, after fetching the tour and reading search state
+
+  // Ensure tour exists before computing prices
+  const adultPrice = tour?.ticketPriceAdult ?? tour?.sharedTransferAdult ?? 0;
+  const childPrice = tour?.ticketPriceChild ?? tour?.sharedTransferChild ?? 0;
+
+  // Total price calculations
+  const adultTotal = adultPrice * adults;
+  const childTotal = childPrice * children;
+
+  // Transfer slab price
+  const transferRatePerPerson = getTransferRate(
+    tour?.transferRates,
+    totalPersons,
+  );
+  const transferTotal = transferRatePerPerson * totalPersons;
+
+  // Grand total
+  const grandTotal = adultTotal + childTotal + transferTotal;
+  const grandTotalFixed = Number(grandTotal.toFixed(2));
+
+  // ---------- Book Now Handler ----------
+  const handleBookNow = async () => {
+    if (!userId) {
+      message.error("Please login first to continue booking");
+      return;
+    }
+
+    if (!tour || !tour._id) {
+      message.error("Tour/Transfer data is not loaded yet");
+      return;
+    }
+
+    if (grandTotal <= 0) {
+      message.error("Invalid number of   amount");
+      return;
+    }
 
     const metadata = { tourId: tour._id, adults, children, userId };
+
     try {
       setLoading(true);
-
-      if (!tour || !tour._id) {
-        console.error("Tour data missing:", tour);
-        alert("Tour data is not loaded yet");
-        return;
-      }
 
       const res = await paymentAPI.createPaymentIntent({
         amount: Math.round(grandTotal * 100),
@@ -198,8 +220,7 @@ export default function BookingForm() {
       });
 
       if (!res?.data?.clientSecret || !res?.data?.paymentIntentId) {
-        console.error("Invalid response from backend:", res.data);
-        alert("Payment initiation failed");
+        message.error("Payment initiation failed");
         return;
       }
 
@@ -207,8 +228,14 @@ export default function BookingForm() {
       setPaymentIntentId(res.data.paymentIntentId);
       setShowPayment(true);
     } catch (err) {
-      console.error(err);
-      alert("Payment initiation failed");
+      console.error("Payment error:", err);
+      if (err?.response?.data?.message) {
+        message.error(err.response.data.message); // show backend error
+      } else if (err?.message) {
+        message.error(err.message);
+      } else {
+        message.error("Something went wrong during payment");
+      }
     } finally {
       setLoading(false);
     }
@@ -255,9 +282,13 @@ export default function BookingForm() {
 
   return (
     <div className="max-w-6xl mx-auto my-16 px-4">
-      <h2 className="text-2xl font-bold text-center mb-4 font-serif">
+      <h2 className="text-2xl font-bold text-[#10E9DD] text-center mb-4 font-serif">
         Book Your Tour
       </h2>
+      <p className="mx-auto my-4 text-center max-w-2xl">
+        Safe, fast, and simple transfer and tour reservations with secure
+        payment options. Travel smarter with tourandtransfer.
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left: Tour Card */}
         {tour && (
@@ -316,9 +347,11 @@ export default function BookingForm() {
               <div className="text-sm opacity-80 mb-4">
                 Thank you for choosing us. Our team will contact you shortly.
               </div>
-
               <button
-                onClick={() => setBookingSuccess(false)}
+                onClick={() => {
+                  setBookingSuccess(false);
+                  router.push("/");
+                }}
                 className="mt-4 bg-[#10E9DD] hover:bg-[#0fcfc4] text-white py-2 px-6 rounded-full font-semibold shadow-md"
               >
                 Close

@@ -29,7 +29,7 @@ You can cancel up to 24 hours in advance of the experience for a full refund. Fo
           </p>
           <button
             onClick={() => openModal("cancellation")}
-            className="px-4 py-2 border bg-[#10E9DD] text-white rounded-md  transition"
+            className="px-4 py-2 border bg-[#ffda32] text-white rounded-md  transition"
           >
             See More
           </button>
