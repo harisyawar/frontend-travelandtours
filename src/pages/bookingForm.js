@@ -241,12 +241,12 @@ export default function BookingForm() {
     console.log(totalPersons);
     let grandTotal = 0;
 
-    if (tour.sharedTransferAdult > 0) {
+    if (tour?.sharedTransferAdult > 0) {
       grandTotal =
         tour?.sharedTransferAdult * adults +
         tour?.sharedTransferChild * children;
       console.log(grandTotal, "total");
-    } else if (tour.transferRates?.length > 0) {
+    } else if (tour?.transferRates?.length > 0) {
       const transferRatePerPerson = getTransferRate(
         tour?.transferRates,
         totalPersons,

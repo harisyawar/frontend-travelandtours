@@ -38,7 +38,7 @@ export default function MyBookings() {
     fetchtransferBookings();
   }, [userId]);
   return (
-    <div className="max-w-7xl mx-auto  px-4 py-16">
+    <div className="max-w-7xl mx-auto min-h-screen  px-4 py-16">
       <h1 className="text-2xl font-bold mb-4 font-serif ">My Booked Tours</h1>
 
       {/* ================= MOBILE CARDS ================= */}

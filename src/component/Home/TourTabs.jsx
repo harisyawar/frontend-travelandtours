@@ -127,12 +127,16 @@ const TourTabs = () => {
   }, []);
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold text-center">
-        Discover Top Travel Destinations
+      <h2 className="text-3xl font-bold text-center font-serif">
+        Discover Top Trending Tours
       </h2>
+      <p className="text-gray-600 pt-4 mx-auto text-center max-w-2xl">
+        Explore top trending tours across the world, featuring the most popular
+        destinations, unique experiences, and traveler-approved adventures.
+      </p>
 
       {/* Country Tabs */}
-      <div className="flex flex-wrap justify-center gap-4 my-10">
+      <div className="flex flex-wrap justify-self-start md:justify-center gap-4 my-10">
         {countriesData.map((country) => (
           <button
             key={country.id}
