@@ -62,7 +62,7 @@ export default function TourApi({ city_region_id }) {
                   alt={tour.name}
                   width={400}
                   height={300}
-                  className="object-cover rounded-lg h-[300px]"
+                  className="object-cover rounded-lg h-[300px] w-[-webkit-fill-available]"
                 />
                 <span className="absolute bottom-6 right-6 bg-[#3FD0D4] text-white text-sm font-semibold px-4 py-1 rounded-md">
                   ${tour.ticketPriceAdult}/per person

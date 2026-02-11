@@ -1,194 +1,150 @@
 import { useState } from "react";
 import Image from "next/image";
+import { getToursByCity } from "@/Services/TravelApis";
 
-// Local assets
+/* 1️⃣ Static countries OUTSIDE component */
+const initialCountries = [
+  {
+    id: 1951,
+    name: "Kuala Lumpur",
+    description:
+      "Malaysia, country of Southeast Asia, lying just north of the Equator, that is composed of two noncontiguous regions: Peninsular Malaysia and East Malaysia",
+    image: "/images/kuala.jpg",
+    tours: [],
+  },
+  {
+    id: 602651,
+    name: "Bali",
+    description:
+      "Maldives is a tropical paradise with white-sand beaches, crystal-clear waters, and luxury island resorts—perfect for honeymoon and beach vacations.",
+    image: "/images/bali.jpg",
+    tours: [],
+  },
+  {
+    id: 604,
+    name: "Bangkok",
+    description:
+      "Thailand is a vibrant travel destination famous for tropical beaches, rich culture, street food, luxury resorts, and unforgettable island adventures",
+    image: "/images/bangkok.avif",
+    tours: [],
+  },
+  {
+    id: 3168,
+    name: "Singapore",
+    description:
+      "Singapore is a modern travel destination known for luxury shopping, iconic skyline, clean streets, world-class attractions, and diverse cuisine",
+    image: "/images/singapore.webp",
+    tours: [],
+  },
+  {
+    id: 6053839,
+    name: "Dubai",
+    description:
+      "Dubai is a luxury travel destination famous for iconic skyscrapers, desert safaris, world-class shopping, and vibrant nightlife",
+    image: "/images/dubai.jpg",
+    tours: [],
+  },
+  {
+    id: 1639,
+    name: "Istanbul",
+    description:
+      "Saudi Arabia is a fast-growing travel destination known for rich Islamic heritage, modern cities, luxury tourism, and desert adventures",
+    image: "/images/itanbul.jpg",
+    tours: [],
+  },
+  {
+    id: 6126505,
+    name: "Langkawi",
+    description:
+      "Turkey is a top travel destination offering rich history, stunning landscapes, vibrant culture, and a unique blend of Europe and Asia.",
+    image: "/images/langkawi.jpg",
+    tours: [],
+  },
+  {
+    id: 6046393,
+    name: "Phuket",
+    description:
+      "Sri Lanka is a beautiful island with rich culture, beaches, and wildlife",
+    image: "/images/phuket.jpg",
+    tours: [],
+  },
+];
 
 const TourTabs = () => {
-  const countriesData = [
-    {
-      id: 1,
-      name: "Kuala Lumpur ",
-      description:
-        "Malaysia, country of Southeast Asia, lying just north of the Equator, that is composed of two noncontiguous regions: Peninsular Malaysia and East Malaysia",
-      image: "/images/kuala.jpg",
-      tours: [
-        {
-          title: "Central Park Walk",
-          image: "https://source.unsplash.com/400x250/?malaysia,park",
-          duration: "2 hours",
-          price: "$45",
-          reviews: "200",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Bali",
-      description:
-        "Maldives is a tropical paradise with white-sand beaches, crystal-clear waters, and luxury island resorts—perfect for honeymoon and beach vacations.",
-      image: "/images/bali.jpg",
-      tours: [
-        {
-          title: "Beach Relaxation Tour",
-          image: "https://source.unsplash.com/400x250/?maldives,beach",
-          duration: "3 hours",
-          price: "$50",
-          reviews: "200",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "bangkok",
-      description:
-        "Thailand is a vibrant travel destination famous for tropical beaches, rich culture, street food, luxury resorts, and unforgettable island adventures",
-      image: "/images/bangkok.avif",
-      tours: [
-        {
-          title: "Bangkok City Tour",
-          image: "/images/bangkok1.webp",
-          duration: "2 hours",
-          price: "$35",
-          reviews: "200",
-        },
-        {
-          title: "Chiang Mai Adventure",
-          image: "/images/bangkok2.jpg",
-          duration: "4 hours",
-          price: "$55",
-          reviews: "200",
-        },
-        {
-          title: "Phuket Island Hopping",
-          image: "/images/bangkok3.jpg",
-          duration: "3 hours",
-          price: "$40",
-          reviews: "200",
-        },
-        {
-          title: "Ayutthaya Historical Tour",
-          image: "/images/bangkok4.jpg",
-          duration: "3 hours",
-          price: "$40",
-          reviews: "200",
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "singapore",
-      description:
-        "Singapore is a modern travel destination known for luxury shopping, iconic skyline, clean streets, world-class attractions, and diverse cuisine",
-      image: "/images/singapore.webp",
-      tours: [],
-    },
-    {
-      id: 5,
-      name: "Dubai",
-      description:
-        "Dubai is a luxury travel destination famous for iconic skyscrapers, desert safaris, world-class shopping, and vibrant nightlife",
-      image: "/images/dubai.jpg",
-      tours: [
-        {
-          title: "Desert Safari",
-          image: "https://source.unsplash.com/400x250/?dubai,desert",
-          duration: "5 hours",
-          price: "$70",
-          reviews: "200",
-        },
-      ],
-    },
-    {
-      id: 6,
-      name: "Istanbul",
-      description:
-        "Saudi Arabia is a fast-growing travel destination known for rich Islamic heritage, modern cities, luxury tourism, and desert adventures",
-      image: "/images/itanbul.jpg",
-      tours: [],
-    },
-    {
-      id: 7,
-      name: "langkawi",
-      description:
-        "Turkey is a top travel destination offering rich history, stunning landscapes, vibrant culture, and a unique blend of Europe and Asia.",
-      image: "/images/langkawi.jpg",
-      tours: [],
-    },
+  /* 2️⃣ States */
+  const [countriesData] = useState(initialCountries);
+  const [activeCountry, setActiveCountry] = useState(initialCountries[0]);
+  const [loadingTours, setLoadingTours] = useState(false);
 
-    {
-      id: 9,
-      name: "Phuket",
-      description:
-        "Sri Lanka is a beautiful island with rich culture, beaches, and wildlife",
-      image: "/images/phuket.jpg",
-      tours: [],
-    },
-  ];
+  /* 3️⃣ API call on button click */
+  const fetchToursByCountry = async (country) => {
+    try {
+      setLoadingTours(true);
 
-  const [activeCountry, setActiveCountry] = useState(countriesData[2]);
+      const res = await getToursByCity(country.id);
+      console.log(res, "tabs");
+      const tours = res?.tours || []; // correct array
+      console.log(tours, "tabs");
+      // Sort by selectionCount and pick top 4
+      const topTours = tours
+        .sort((a, b) => (b.selectionCount || 0) - (a.selectionCount || 0))
+        .slice(0, 4);
+
+      setActiveCountry({
+        ...country,
+        tours: topTours,
+      });
+    } catch (error) {
+      console.error("Failed to fetch tours", error);
+      setActiveCountry({ ...country, tours: [] });
+    } finally {
+      setLoadingTours(false);
+    }
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-4 py-12">
-      {/* <h4 className="font-serif text-[#e9c151] text-center text-xl">
-        Top Trending Tour
-      </h4> */}
-      <h2 className="text-3xl font-bold font-serif text-center">
+    <div className="max-w-7xl mx-auto px-4 py-12">
+      <h2 className="text-3xl font-bold text-center">
         Discover Top Travel Destinations
       </h2>
-      <p className="mx-auto text-gray-500 my-4 max-w-3xl text-center">
-        Discover hand-picked hotels in the world’s most loved cities, offering
-        comfort, convenience, and great value for every traveler
-      </p>
 
-      {/* Country Selector Buttons */}
-      <div className="flex flex-wrap justify-items-start md:justify-center  gap-4 my-10">
+      {/* Country Tabs */}
+      <div className="flex flex-wrap justify-center gap-4 my-10">
         {countriesData.map((country) => (
           <button
             key={country.id}
-            onClick={() => setActiveCountry(country)}
-            className={`
-        px-6 py-2 rounded text-sm font-medium capitalize
-        transition-all duration-300
-        ${activeCountry.id === country.id
-                ? "bg-[#3FD0D4] text-white shadow-sm"
-                : "bg-[#F6FFFF] text-[#464646]  hover:bg-[#3FD0D4] hover:text-white"
-              }
-      `}
+            onClick={() => fetchToursByCountry(country)}
+            className={`px-6 py-2 rounded text-sm font-medium transition ${
+              activeCountry.id === country.id
+                ? "bg-[#3FD0D4] text-white"
+                : "bg-[#edf7f7] text-gray-700 hover:bg-[#3FD0D4] hover:text-white"
+            }`}
           >
             {country.name}
           </button>
         ))}
       </div>
 
-      {/* Main Image */}
-      <div className="relative mb-4">
-        {/* Image */}
+      {/* Hero Image */}
+      <div className="relative mb-6">
         <Image
           src={activeCountry.image}
           alt={activeCountry.name}
           width={1200}
-          height={600}
-          className="w-full h-[300px] md:h-[500px] object-cover rounded-xl"
-          priority
+          height={500}
+          className="w-full h-[400px] object-cover rounded-xl"
         />
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/50 to-transparent"></div>
-
-        {/* Text at bottom-left */}
-        <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 text-white">
-          <h3 className="text-2xl md:text-4xl font-volkhov mb-2 capitalize font-bold">
-            {activeCountry.name}
-          </h3>
-          <p className=" text-sm md:text-base text-white font-medium max-w-xl">
-            {activeCountry.description}
-          </p>
+        <div className="absolute inset-0 bg-black/40 rounded-xl" />
+        <div className="absolute bottom-6 left-6 text-white max-w-xl">
+          <h3 className="text-3xl font-bold">{activeCountry.name}</h3>
+          <p className="mt-2 text-sm">{activeCountry.description}</p>
         </div>
       </div>
-
       {/* Tours */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {activeCountry.tours.length > 0 ? (
+        {loadingTours ? (
+          <p className="col-span-full text-center">Loading tours...</p>
+        ) : activeCountry.tours.length > 0 ? (
           activeCountry.tours.map((tour, index) => (
             <div
               key={index}
@@ -197,7 +153,7 @@ const TourTabs = () => {
               {/* Image Section */}
               <div className="relative p-3">
                 <Image
-                  src={tour.image}
+                  src={`https://northpointtravel.s3.eu-north-1.amazonaws.com/images/${tour.images[0]}`}
                   alt={tour.title}
                   width={400}
                   height={250}
@@ -213,21 +169,10 @@ const TourTabs = () => {
               {/* Content */}
               <div className="px-5 pb-5">
                 {/* Location */}
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="#3FD0D4"
-                  >
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" />
-                  </svg>
-                  <span>{activeCountry.name}</span>
-                </div>
 
                 {/* Title */}
                 <h4 className="text-lg font-bold text-[#363636] leading-snug mb-3">
-                  {tour.title}
+                  {tour.name}
                 </h4>
 
                 {/* Meta Info */}

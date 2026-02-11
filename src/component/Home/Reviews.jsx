@@ -39,15 +39,15 @@ const Reviews = () => {
   const currentReview = reviews[current];
 
   return (
-    <section className="relative w-full min-h-[500px] lg:min-h-[600px] flex items-center py-8">
+    <section className="relative w-full min-h-[300px]  flex items-center py-4 lg:py-8 2xl:py-0">
       <div className="flex flex-col lg:flex-row w-full items-center justify-between gap-8 lg:gap-0">
         {/* Left Side - Image */}
-        <div className="relative w-full lg:w-[60%] h-[400px] md:h-[450px] lg:h-[550px]">
+        <div className="relative w-full lg:w-[60%] h-[218px] md:h-[450px] ">
           <Image
             src="/images/left-contents.png"
             alt="Happy Travelers Background"
             fill
-            className="object-contain object-left"
+            className=" object-left"
             priority
           />
         </div>

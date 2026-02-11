@@ -46,7 +46,7 @@ const WhatsIncludedAndPickup = ({ included = [], excluded = [] }) => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0  bg-white/80 backdrop-blur-80 flex items-center justify-center z-50">
-          <div className="bg-white  border rounded-lg p-6 max-w-[302px] md:max-w-3xl w-full relative max-h-[80vh] overflow-y-auto">
+          <div className="bg-white  border rounded-lg p-6  max-w-[302px] md:max-w-[550px] w-full relative max-h-[80vh] overflow-y-auto">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl font-bold"

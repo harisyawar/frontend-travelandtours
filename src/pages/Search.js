@@ -26,7 +26,9 @@ export default function SearchPage({ country }) {
   const [selectedDestinations, setSelectedDestinations] = useState([]);
   const [selectedReviews, setSelectedReviews] = useState([]);
   console.log(tours, "tour");
-  const type = searchParams.get("type");
+
+  const { type } = router.query;
+
   const hasTour = tours && tours.length > 0;
 
   useEffect(() => {
@@ -122,8 +124,9 @@ export default function SearchPage({ country }) {
 
         {/* Sidebar */}
         <aside
-          className={`fixed top-0 left-0 h-full max-h-screen w-3/4 max-w-xs bg-white z-50 p-6 space-y-6 transform transition-transform overflow-hidden duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } overflow-y-auto lg:overflow-y-visible lg:translate-x-0 lg:relative lg:w-1/4 lg:block`}
+          className={`fixed top-0 left-0 h-full max-h-screen w-3/4  max-w-xs bg-white z-50 p-6 space-y-6 transform transition-transform overflow-hidden duration-300 ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } overflow-y-auto lg:overflow-y-visible lg:translate-x-0 lg:relative lg:w-1/4 lg:block`}
         >
           {/* Close Button */}
           <div className="lg:hidden flex justify-end mb-4">
