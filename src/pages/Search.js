@@ -20,15 +20,33 @@ export default function SearchPage({ country }) {
   const city_region_id = router.query.city_region_id;
   const adult = router.query.adult;
   const child = router.query.child;
+  const totalPersons = adult + child; // 3
 
   const [priceRange, setPriceRange] = useState(500);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDestinations, setSelectedDestinations] = useState([]);
   const [selectedReviews, setSelectedReviews] = useState([]);
   console.log(tours, "tour");
-
   const { type } = router.query;
 
+  const getTransferRate = (transferRates, totalPersons) => {
+    if (!transferRates?.length) return 0;
+
+    const slab = transferRates.find(
+      (r) => totalPersons >= r.minPax && totalPersons <= r.maxPax,
+    );
+
+    return slab ? slab.rate : 0;
+  };
+  const adultPrice = tours?.ticketPriceAdult ?? 0; // e.g., 50
+  const transferRatePerPerson = getTransferRate(
+    tours.transferRates,
+    totalPersons,
+  ); // 16
+  const grandTotal = transferRatePerPerson + adultPrice;
+  // 100 + 25 + 48 = 173
+  const grandTotalFixed = Number(grandTotal.toFixed(2));
+  
   const hasTour = tours && tours.length > 0;
 
   useEffect(() => {

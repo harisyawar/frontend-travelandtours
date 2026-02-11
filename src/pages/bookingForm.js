@@ -168,28 +168,6 @@ export default function BookingForm() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  // ---------- Inside BookingForm ----------
-
-  // Compute totals only once, after fetching the tour and reading search state
-
-  // Ensure tour exists before computing prices
-  const adultPrice = tour?.ticketPriceAdult ?? tour?.sharedTransferAdult ?? 0;
-  const childPrice = tour?.ticketPriceChild ?? tour?.sharedTransferChild ?? 0;
-
-  // Total price calculations
-  const adultTotal = adultPrice * adults;
-  const childTotal = childPrice * children;
-
-  // Transfer slab price
-  const transferRatePerPerson = getTransferRate(
-    tour?.transferRates,
-    totalPersons,
-  );
-  const transferTotal = transferRatePerPerson * totalPersons;
-
-  // Grand total
-  const grandTotal = adultTotal + childTotal + transferTotal;
-  const grandTotalFixed = Number(grandTotal.toFixed(2));
 
   // ---------- Book Now Handler ----------
   const handleBookNow = async () => {
@@ -203,7 +181,7 @@ export default function BookingForm() {
       return;
     }
 
-    if (grandTotal <= 0) {
+    if (grandTotalFixed <= 0) {
       message.error("Invalid number of   amount");
       return;
     }
@@ -214,7 +192,7 @@ export default function BookingForm() {
       setLoading(true);
 
       const res = await paymentAPI.createPaymentIntent({
-        amount: Math.round(grandTotal * 100),
+        amount: grandTotalFixed,
         currency: "usd",
         metadata,
       });
@@ -240,7 +218,48 @@ export default function BookingForm() {
       setLoading(false);
     }
   };
+  let grandTotalFixed = 0; // default value
 
+  if (type === "tour") {
+    const adultPrice = tour?.ticketPriceAdult ?? 0;
+    const childPrice = tour?.ticketPriceChild ?? 0;
+
+    const adultTotal = adultPrice * adults;
+    const childTotal = childPrice * children;
+
+    const transferRatePerPerson = getTransferRate(
+      tour?.transferRates,
+      totalPersons,
+    );
+    const transferTotal = transferRatePerPerson * totalPersons;
+
+    const grandTotal = adultTotal + childTotal + transferTotal;
+    grandTotalFixed = Number(grandTotal.toFixed(2));
+  }
+
+  if (type === "transfer") {
+    console.log(totalPersons);
+    let grandTotal = 0;
+
+    if (tour.sharedTransferAdult > 0) {
+      grandTotal =
+        tour?.sharedTransferAdult * adults +
+        tour?.sharedTransferChild * children;
+      console.log(grandTotal, "total");
+    } else if (tour.transferRates?.length > 0) {
+      const transferRatePerPerson = getTransferRate(
+        tour?.transferRates,
+        totalPersons,
+      );
+      grandTotal = transferRatePerPerson;
+    }
+
+    grandTotalFixed = Number(grandTotal.toFixed(2));
+  }
+  console.log("Tour Type:", type);
+  console.log("Adults:", adults, "Children:", children, "Total:", totalPersons);
+  console.log("Tour Prices:", tour?.ticketPriceAdult, tour?.ticketPriceChild);
+  console.log("Transfer Rates:", tour?.transferRates);
   const bookingPayload = {
     userId,
     name: formData.name,
@@ -248,7 +267,7 @@ export default function BookingForm() {
     email: formData.email,
     nationality: formData.nationality,
     guests: { adults, children },
-    price: grandTotal,
+    price: grandTotalFixed,
     pickupLocation: formData.pickupLocation,
 
     // Extra fields for transfer
@@ -328,7 +347,9 @@ export default function BookingForm() {
             </div>
             <div className="flex items-center justify-between text-lg font-bold w-full">
               <span className="text-gray-700 ">Total Price</span>
-              <span className="text-[#10E9DD]  text-right">${grandTotal}</span>
+              <span className="text-[#10E9DD]  text-right">
+                ${grandTotalFixed}
+              </span>
             </div>
           </div>
         )}

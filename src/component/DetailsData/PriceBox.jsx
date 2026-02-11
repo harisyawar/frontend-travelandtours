@@ -4,6 +4,8 @@ import { useAtom } from "jotai";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Children } from "react";
+import { useState, useRef, useEffect } from "react";
+import { FaRegEdit } from "react-icons/fa";
 
 const getTransferRate = (transferRates, totalPersons) => {
   if (!transferRates?.length) return 0;
@@ -16,15 +18,35 @@ const getTransferRate = (transferRates, totalPersons) => {
 };
 
 const PriceBox = ({ tour }) => {
-  console.log(tour, "data11");
-  const [search] = useAtom(searchAtom);
+  console.log(tour, "data1");
+
   const [data] = useAtom(searchAtom);
   const [user] = useAtom(userAtom);
   const router = useRouter();
   const type = data?.type;
-  console.log(type, "type ");
-  const adults = search.adults || 0;
-  const children = search.children || 0;
+  console.log(type, "typein price ");
+  const [search, setSearch] = useAtom(searchAtom);
+  const [showSelector, setShowSelector] = useState(false);
+
+  const adults = Number(search.adults) || 1;
+  const children = Number(search.children) || 0;
+
+  const totalPersons = adults + children;
+  console.log(totalPersons, "hii");
+  const updateAdults = (value) => {
+    setSearch({
+      ...search,
+      adults: Math.max(1, value),
+    });
+  };
+
+  const updateChildren = (value) => {
+    setSearch({
+      ...search,
+      children: Math.max(0, value),
+    });
+  };
+
   const handleBookNow = () => {
     if (!user) {
       message.error("Please login first to book!");
@@ -42,30 +64,48 @@ const PriceBox = ({ tour }) => {
     });
   };
 
-  // per person prices
-  const adultPrice = tour.ticketPriceAdult ?? tour.sharedTransferAdult ?? 0;
+  let grandTotalFixed = 0; // default value
 
-  const childPrice = tour.ticketPriceChild ?? tour.sharedTransferChild ?? 0;
-  console.log(adultPrice);
-  console.log(childPrice);
-  // totals
-  const adultTotal = adultPrice * adults;
-  const childTotal = childPrice * children;
+  if (type === "tour") {
+    const adultPrice = tour.ticketPriceAdult ?? 0;
+    const childPrice = tour.ticketPriceChild ?? 0;
 
-  const totalPersons = adults + children;
+    const adultTotal = adultPrice * adults;
+    const childTotal = childPrice * children;
 
-  // transfer slab price
-  const transferRatePerPerson = getTransferRate(
-    tour.transferRates,
-    totalPersons,
-  );
+    const transferRatePerPerson = getTransferRate(
+      tour.transferRates,
+      totalPersons,
+    );
+    const transferTotal = transferRatePerPerson * totalPersons;
 
-  const transferTotal = transferRatePerPerson * totalPersons;
+    const grandTotal = adultTotal + childTotal + transferTotal;
+    grandTotalFixed = Number(grandTotal.toFixed(2));
+  }
 
-  // grand total
-  const grandTotal = adultTotal + childTotal + transferTotal;
-  const grandTotalFixed = Number(grandTotal.toFixed(2));
-  console.log(grandTotal);
+  if (type === "transfer") {
+    console.log(totalPersons);
+    let grandTotal = 0;
+
+    if (tour.sharedTransferAdult > 0) {
+      grandTotal =
+        tour.sharedTransferAdult * adults + tour.sharedTransferChild * children;
+      console.log(grandTotal, "total");
+    } else if (tour.transferRates?.length > 0) {
+      const transferRatePerPerson = getTransferRate(
+        tour.transferRates,
+        totalPersons,
+      );
+      grandTotal = transferRatePerPerson;
+    }
+
+    grandTotalFixed = Number(grandTotal.toFixed(2));
+  }
+  console.log("Tour Type:", type);
+  console.log("Adults:", adults, "Children:", children, "Total:", totalPersons);
+  console.log("Tour Prices:", tour.ticketPriceAdult, tour.ticketPriceChild);
+  console.log("Transfer Rates:", tour.transferRates);
+
   return (
     <div className="w-full max-w-md sticky top-24 self-start bg-white shadow-xl rounded-2xl p-6 space-y-6 border border-gray-100">
       {/* Header */}
@@ -74,7 +114,7 @@ const PriceBox = ({ tour }) => {
       </h4>
 
       {/* Info Boxes */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         {/* Duration */}
         {(tour.duration || tour.timing) && (
           <div className="bg-gray-50 rounded-xl p-4">
@@ -88,13 +128,74 @@ const PriceBox = ({ tour }) => {
         )}
 
         {/* Guests */}
-        <div className="bg-gray-50 rounded-xl p-4">
-          <span className="block text-xs uppercase tracking-wide text-[#10E9DD] font-medium">
-            Guests
-          </span>
-          <div className="text-gray-800 font-semibold mt-1">
-            {adults} Adults{children > 0 && `, ${children} Children`}
+        {/* Guests */}
+        <div className="relative">
+          <div
+            onClick={() => setShowSelector(!showSelector)}
+            className="bg-gray-50 rounded-xl p-4 cursor-pointer flex items-center justify-between"
+          >
+            <div>
+              <span className="block text-xs uppercase tracking-wide text-[#10E9DD] font-medium">
+                Guests
+              </span>
+              <div className="text-gray-800 font-semibold mt-1">
+                {adults} Adults{children > 0 && `, ${children} Childs`}
+              </div>
+            </div>
+
+            <FaRegEdit className="text-[red] text-2xl" />
           </div>
+
+          {showSelector && (
+            <div className="absolute top-full left-0 w-full bg-white rounded-xl mt-2 p-4 shadow-xl z-50">
+              {/* Adults */}
+              <div className="flex justify-between items-center mb-3">
+                <span className="font-medium">Adults</span>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => updateAdults(adults - 1)}
+                    className="w-7 h-7 bg-gray-200 rounded-full"
+                  >
+                    −
+                  </button>
+                  <span>{adults}</span>
+                  <button
+                    onClick={() => updateAdults(adults + 1)}
+                    className="w-7 h-7 bg-gray-200 rounded-full"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Children */}
+              <div className="flex justify-between items-center mb-3">
+                <span className="font-medium">Children</span>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => updateChildren(children - 1)}
+                    className="w-7 h-7 bg-gray-200 rounded-full"
+                  >
+                    −
+                  </button>
+                  <span>{children}</span>
+                  <button
+                    onClick={() => updateChildren(children + 1)}
+                    className="w-7 h-7 bg-gray-200 rounded-full"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowSelector(false)}
+                className="w-full bg-[#10E9DD] text-white py-2 rounded-lg mt-2"
+              >
+                Done
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getToursByCity } from "@/Services/TravelApis";
-
+import Link from "next/link";
+import { useAtom } from "jotai";
+import { searchAtom } from "@/store/atoms";
+import { MdOutlineTimer } from "react-icons/md";
 /* 1️⃣ Static countries OUTSIDE component */
 const initialCountries = [
   {
@@ -69,23 +72,39 @@ const initialCountries = [
     tours: [],
   },
 ];
-
 const TourTabs = () => {
-  /* 2️⃣ States */
+  const [search, setSearch] = useAtom(searchAtom);
+
   const [countriesData] = useState(initialCountries);
   const [activeCountry, setActiveCountry] = useState(initialCountries[0]);
   const [loadingTours, setLoadingTours] = useState(false);
-
-  /* 3️⃣ API call on button click */
+  const [searchState, setSearchState] = useAtom(searchAtom);
+  const adults = Number(search.adults) || 1;
+  const children = Number(search.children) || 0;
+  console.log(activeCountry, "hlo");
+  const totalPersons = adults + children;
+  const handleTourClick = (tour, country) => {
+    setSearchState({
+      ...searchState,
+      city_region_id: country.id,
+      label: `${country.name}`,
+      type: "tour",
+    });
+  };
+  const getTransferRate = (transferRates, totalPersons) => {
+    if (!transferRates?.length) return 0;
+    const slab = transferRates.find(
+      (r) => totalPersons >= r.minPax && totalPersons <= r.maxPax,
+    );
+    return slab ? slab.rate : 0;
+  };
   const fetchToursByCountry = async (country) => {
     try {
       setLoadingTours(true);
 
       const res = await getToursByCity(country.id);
-      console.log(res, "tabs");
-      const tours = res?.tours || []; // correct array
-      console.log(tours, "tabs");
-      // Sort by selectionCount and pick top 4
+      const tours = res?.tours || [];
+
       const topTours = tours
         .sort((a, b) => (b.selectionCount || 0) - (a.selectionCount || 0))
         .slice(0, 4);
@@ -102,6 +121,10 @@ const TourTabs = () => {
     }
   };
 
+  // ✅ Fetch tours for default country on first render
+  useEffect(() => {
+    fetchToursByCountry(activeCountry);
+  }, []);
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <h2 className="text-3xl font-bold text-center">
@@ -142,81 +165,61 @@ const TourTabs = () => {
       </div>
       {/* Tours */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {loadingTours ? (
-          <p className="col-span-full text-center">Loading tours...</p>
-        ) : activeCountry.tours.length > 0 ? (
-          activeCountry.tours.map((tour, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden"
-            >
-              {/* Image Section */}
-              <div className="relative p-3">
-                <Image
-                  src={`https://northpointtravel.s3.eu-north-1.amazonaws.com/images/${tour.images[0]}`}
-                  alt={tour.title}
-                  width={400}
-                  height={250}
-                  className="w-full h-[230px] object-cover rounded-lg"
-                />
+        {activeCountry.tours.length > 0 ? (
+          activeCountry.tours.map((tour, index) => {
+            const adultTicketPrice = Number(tour?.ticketPriceAdult ?? 0);
 
-                {/* Price Badge */}
-                <span className="absolute bottom-6 right-6 bg-[#3FD0D4] text-white text-sm font-semibold px-4 py-1 rounded-md">
-                  {tour.price}/day
-                </span>
-              </div>
+            const transferRatePerPerson = getTransferRate(
+              tour?.transferRates || [],
+              totalPersons,
+            );
 
-              {/* Content */}
-              <div className="px-5 pb-5">
-                {/* Location */}
+            const grandTotal = adultTicketPrice + transferRatePerPerson;
 
-                {/* Title */}
-                <h4 className="text-lg font-bold text-[#363636] leading-snug mb-3">
-                  {tour.name}
-                </h4>
+            return (
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden"
+              >
+                <Link
+                  href={`/tour-details/${tour._id}`}
+                  onClick={() => handleTourClick(tour, activeCountry)}
+                >
+                  <div className="relative p-3">
+                    <Image
+                      src={`https://northpointtravel.s3.eu-north-1.amazonaws.com/images/${tour.images[0]}`}
+                      alt={tour.title}
+                      width={400}
+                      height={250}
+                      className="w-full h-[230px] object-cover rounded-lg"
+                    />
 
-                {/* Meta Info */}
-                <div className="flex items-center gap-5 text-sm text-gray-500">
-                  <div className="flex items-center gap-2">
-                    <svg
-                      width="24"
-                      height="21"
-                      viewBox="0 0 24 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M7.75031 3.3463C7.75031 2.99978 7.41452 2.71887 7.00031 2.71887C6.58609 2.71887 6.25031 2.99978 6.25031 3.3463V4.86587C4.75723 5.04245 3.57768 6.03039 3.378 7.29059L3.29145 7.83683C3.27678 7.92944 3.26275 8.0221 3.24936 8.11481C3.21384 8.36074 3.44545 8.57486 3.74155 8.57486H20.259C20.5551 8.57486 20.7867 8.36074 20.7512 8.11481C20.7378 8.0221 20.7238 7.92944 20.7091 7.83683L20.6225 7.29059C20.4229 6.03041 19.2433 5.04248 17.7503 4.86587V3.3463C17.7503 2.99978 17.4145 2.71887 17.0003 2.71887C16.5861 2.71887 16.2503 2.99978 16.2503 3.3463V4.74139C13.4226 4.53072 10.578 4.53072 7.75031 4.74139V3.3463Z"
-                        fill="#3FD0D4"
-                      />
-                      <path
-                        d="M20.9449 10.2275C20.9361 10.0047 20.716 9.82971 20.4494 9.82971H3.55117C3.2846 9.82971 3.06443 10.0047 3.05568 10.2275C2.99628 11.7398 3.10608 13.2551 3.38482 14.7536C3.59583 15.8881 4.69749 16.7594 6.06323 16.8721L7.25623 16.9705C10.4113 17.2308 13.5893 17.2308 16.7443 16.9705L17.9373 16.8721C19.3031 16.7594 20.4047 15.8881 20.6157 14.7536C20.8945 13.2551 21.0043 11.7398 20.9449 10.2275Z"
-                        fill="#3FD0D4"
-                      />
-                    </svg>
-                    <span>April 12, 2023</span>
+                    {/* Price Badge */}
+                    <span className="absolute bottom-6 right-6 bg-[#3FD0D4] text-white text-sm font-semibold px-4 py-1 rounded-md">
+                      ${grandTotal}/Per person
+                    </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <svg
-                      width="24"
-                      height="21"
-                      viewBox="0 0 24 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M3.5 10.0388C3.5 6.11161 7.30558 2.92798 12 2.92798C16.6944 2.92798 20.5 6.11161 20.5 10.0388C20.5 13.966 16.6944 17.1497 12 17.1497C7.30558 17.1497 3.5 13.966 3.5 10.0388ZM12.75 5.85597C12.75 5.50945 12.4142 5.22854 12 5.22854C11.5858 5.22854 11.25 5.50945 11.25 5.85597V10.0388C11.25 10.2552 11.3832 10.4562 11.6025 10.5709L14.6025 12.1394C14.9538 12.3231 15.4165 12.2338 15.636 11.9399C15.8555 11.6461 15.7488 11.259 15.3975 11.0753L12.75 9.69107V5.85597Z"
-                        fill="#3FD0D4"
-                      />
-                    </svg>
-                    <span>{tour.duration}</span>
+
+                  <div className="px-5">
+                    <h4 className="text-lg font-bold text-[#363636] leading-snug mb-3 line-clamp-2">
+                      {tour.name}
+                    </h4>
+
+                    <div
+                      className="text-gray-700 text-sm line-clamp-1"
+                      dangerouslySetInnerHTML={{ __html: tour.description }}
+                    />
+                    <div className="flex items-center gap-2 my-4">
+                      <MdOutlineTimer className="text-[#3FD0D4] font-bold w-6 h-6" />
+                      <p className="text-sm text-gray-500">
+                        {tour.duration || tour.timing}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="col-span-full text-center text-gray-400">
             No tours available for this country
