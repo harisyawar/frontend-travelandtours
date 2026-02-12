@@ -44,7 +44,7 @@ const Reviews = () => {
         {/* Left Side - Image */}
         <div className="relative w-full lg:w-[60%] h-[218px] md:h-[450px] ">
           <Image
-            src="/images/left-contents.png"
+            src="/images/left-contents.webp"
             alt="Happy Travelers Background"
             fill
             className=" object-left"

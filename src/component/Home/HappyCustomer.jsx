@@ -5,7 +5,7 @@ const HappyCustomer = () => {
   return (
     <div className="w-full">
       <Image
-        src="/images/why-choose-us.png"
+        src="/images/why-choose-us.webp"
         alt="Happy Customer"
         width={1600}
         height={200}

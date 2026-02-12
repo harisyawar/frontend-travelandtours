@@ -12,7 +12,7 @@ const initialCountries = [
     name: "Kuala Lumpur",
     description:
       "Malaysia, country of Southeast Asia, lying just north of the Equator, that is composed of two noncontiguous regions: Peninsular Malaysia and East Malaysia",
-    image: "/images/kuala.jpg",
+    image: "/images/kuala.webp",
     tours: [],
   },
   {
@@ -136,7 +136,7 @@ const TourTabs = () => {
       </p>
 
       {/* Country Tabs */}
-      <div className="flex flex-wrap justify-self-start md:justify-center gap-4 my-10">
+      <div className="flex flex-wrap justify-start md:justify-center gap-4 my-10">
         {countriesData.map((country) => (
           <button
             key={country.id}
@@ -160,6 +160,7 @@ const TourTabs = () => {
           width={1200}
           height={500}
           className="w-full h-[400px] object-cover rounded-xl"
+          priority
         />
         <div className="absolute inset-0 bg-black/40 rounded-xl" />
         <div className="absolute bottom-6 left-6 text-white max-w-xl">
@@ -196,6 +197,7 @@ const TourTabs = () => {
                       width={400}
                       height={250}
                       className="w-full h-[230px] object-cover rounded-lg"
+                      priority
                     />
 
                     {/* Price Badge */}

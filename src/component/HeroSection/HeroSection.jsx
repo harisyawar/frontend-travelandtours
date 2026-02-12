@@ -28,10 +28,11 @@ export default function HeroSection({ country, height }) {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/heroBg.png"
+            src="/images/heroBg.webp"
             alt="Tropical Island"
             fill
-            priority={true}
+            priority
+            sizes="100vw"
             className="object-cover"
           />
         </div>
